@@ -1,5 +1,3 @@
-
-
 use std::fs;
 use std::error::Error;
 
@@ -21,15 +19,15 @@ fn main() -> Result<(), Box<dyn Error>> {
     println!("{part1_result}");
     assert_eq!(part1_result, 53651);
 
-    let sampleinput2 ="two1nine
-eightwothree
-abcone2threexyz
-xtwone3four
-4nineeightseven2
-zoneight234
-7pqrstsixteen
-139
-fiveone2";
+    let sampleinput2 ="two1nine\n\
+                             eightwothree\n\
+                             abcone2threexyz\n\
+                             xtwone3four\n\
+                             4nineeightseven2\n\
+                             zoneight234\n\
+                             7pqrstsixteen\n\
+                             139\n\
+                             fiveone2";
 
     let part2_sample = sampleinput2.lines().fold(0, |acc, x| acc + parse_line2(x));
 
