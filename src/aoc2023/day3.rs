@@ -26,6 +26,7 @@ struct SymbolLocation {
     y: i32,
 }
 
+#[derive(PartialEq, Eq, Hash)]
 struct PartNumber {
     value: i32,
     char_len: i32,
@@ -33,7 +34,7 @@ struct PartNumber {
     y: i32,
 }
 
-fn part1(inputstr: &str) -> i32 {
+fn parse_input(inputstr: &str) -> (HashSet<SymbolLocation>, Vec<PartNumber>) {
     let mut symbols: HashSet<SymbolLocation> = HashSet::new();
 
     let mut possible_part_numbers: Vec<PartNumber> = Vec::new();
@@ -54,7 +55,7 @@ fn part1(inputstr: &str) -> i32 {
                 
                 if ! in_progress_part_number.is_empty() {
                     let value = i32::from_str_radix(&in_progress_part_number, 10).unwrap();
-                    let char_len = in_progress_part_number.len().try_into().unwrap();
+                    let char_len = in_progress_part_number.len() as i32;
                     let start_x = x - char_len;
                     possible_part_numbers.push(PartNumber { value, char_len, x: start_x, y});
                     in_progress_part_number.clear();
@@ -66,7 +67,7 @@ fn part1(inputstr: &str) -> i32 {
 
         if ! in_progress_part_number.is_empty() {
             let value = i32::from_str_radix(&in_progress_part_number, 10).unwrap();
-            let char_len = in_progress_part_number.len().try_into().unwrap();
+            let char_len = in_progress_part_number.len() as i32;
             let start_x = x - char_len;
             possible_part_numbers.push(PartNumber { value, char_len, x: start_x, y});
             in_progress_part_number.clear();
@@ -74,6 +75,12 @@ fn part1(inputstr: &str) -> i32 {
 
         y += 1;
     }
+
+    return (symbols, possible_part_numbers);
+}
+
+fn part1(inputstr: &str) -> i32 {
+    let (symbols, possible_part_numbers) = parse_input(inputstr);
 
     let mut part_numbers: Vec<PartNumber> = Vec::new();
 
@@ -101,4 +108,10 @@ fn part1(inputstr: &str) -> i32 {
     }
 
     return part_numbers.iter().fold(0, |a, b| a + b.value);
+}
+
+fn part2(inputstr: &str) -> i32 {
+    let (symbols, possible_part_numbers) = parse_input(inputstr);
+
+    return 0;
 }
