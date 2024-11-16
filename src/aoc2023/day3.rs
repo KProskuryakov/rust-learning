@@ -1,4 +1,5 @@
 use std::collections::HashSet;
+use std::collections::HashMap;
 use std::fs;
 use std::error::Error;
 
@@ -16,6 +17,17 @@ pub fn solve() -> Result<(), Box<dyn Error>> {
 
     println!("2023-03 Part 1 result: {}", part1_result);
     assert_eq!(part1_result, 525119);
+
+
+    let part2_sample_result = part2(&sample);
+
+    println!("2023-03 Part 2 sample: {}", part2_sample_result);
+    assert_eq!(part2_sample_result, 467835);
+
+    let part2_result = part2(&part1_input);
+
+    println!("2023-03 Part 2 result: {}", part2_result);
+    assert_eq!(part2_result, 76504829);
 
     return Ok(());
 }
@@ -113,5 +125,33 @@ fn part1(inputstr: &str) -> i32 {
 fn part2(inputstr: &str) -> i32 {
     let (symbols, possible_part_numbers) = parse_input(inputstr);
 
-    return 0;
+    let mut locs_to_parts: HashMap<SymbolLocation, &PartNumber> = HashMap::new();
+
+    for p in &possible_part_numbers {
+        let y = p.y;
+        for x in p.x .. p.x + p.char_len {
+            locs_to_parts.insert(SymbolLocation {x, y}, p);
+        }
+    }
+
+    let mut running_count = 0;
+
+    for s in symbols {
+        let mut parts_around_symbol: HashSet<&PartNumber> = HashSet::new();
+        for x in s.x-1..=s.x+1 {
+            for y in s.y-1..=s.y+1 {
+                if s.x != x || s.y != y {
+                    let part_at_loc = locs_to_parts.get(&SymbolLocation {x, y});
+                    if part_at_loc.is_some() {
+                        parts_around_symbol.insert(*part_at_loc.unwrap());
+                    }
+                }
+            }
+        }
+        if parts_around_symbol.len() == 2 {
+            running_count += parts_around_symbol.iter().fold(1, |a, b| a * b.value);
+        }
+    }
+
+    return running_count;
 }

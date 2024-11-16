@@ -9,14 +9,14 @@ pub fn solve() -> Result<(), Box<dyn Error>> {
 
     let adds = sampleinput.lines().fold(0, |acc, x| acc + parse_line(x));
     
-    println!("{adds}");
+    println!("2023-01 Part 1 sample: {adds}");
     assert_eq!(adds, 142);
 
     let part1 = fs::read_to_string("aoc-inputs/2023-01/part1.txt")?;
 
     let part1_result = part1.lines().fold(0, |acc, x| acc + parse_line(x));
 
-    println!("{part1_result}");
+    println!("2023-01 Part 1 result: {part1_result}");
     assert_eq!(part1_result, 53651);
 
     let sampleinput2 ="two1nine\n\
@@ -31,12 +31,12 @@ pub fn solve() -> Result<(), Box<dyn Error>> {
 
     let part2_sample = sampleinput2.lines().fold(0, |acc, x| acc + parse_line2(x));
 
-    println!("{part2_sample}");
+    println!("2023-01 Part 2 sample: {part2_sample}");
     assert_eq!(part2_sample, 352);
 
     let part2_result = part1.lines().fold(0, |acc, x| acc + parse_line2(x));
 
-    println!("{part2_result}");
+    println!("2023-01 Part 2 result: {part2_result}");
     assert_eq!(part2_result, 53894);
 
     return Ok(());
