@@ -7,7 +7,7 @@ pub fn solve() -> Result<(), Box<dyn Error>> {
   let part1_sample_expected = 13;
   let part1_solution_expected = 23673;
   let part2_sample_expected = 30;
-  let part2_solution_expected = 0;
+  let part2_solution_expected = 12263631;
 
   let part1_sample_file = format!("aoc-inputs/{date}/sample.txt");
   let part1_solution_file = format!("aoc-inputs/{date}/part1.txt");
@@ -84,5 +84,44 @@ fn process_line(line: &str) -> Option<i32> {
 }
 
 fn part2(inputstr: &str) -> i32 {
-  return 0;
+  let nums: Vec<i32> = inputstr.lines().map(|line| process_line2(line).unwrap_or(0)).collect();
+
+  let mut copies = vec![1; nums.len()];
+
+  for i in 0..nums.len() {
+    let copies_of_this = copies[i];
+    let cur_wins = nums[i] as usize;
+    for f in 1..=cur_wins {
+      copies[i + f] = copies[i + f] + copies_of_this;
+    }
+  }
+
+  return copies.iter().fold(0, |a, v| a + v);
+}
+
+fn process_line2(line: &str) -> Option<i32> {
+  let split_line = line.split(":").collect::<Vec<&str>>();
+  let important_part = split_line.get(1)?;
+  let split_str: Vec<&str> = important_part.split("|").collect();
+
+  let winning_string = split_str.get(0)?;
+  let my_string = split_str.get(1)?;
+
+  let mut winning_nums = HashSet::new();
+
+  for winning_num_str in winning_string.split_whitespace() {
+    let winning_num = winning_num_str.parse::<i32>().ok()?;
+    winning_nums.insert(winning_num);
+  }
+
+  let mut points = 0;
+
+  for my_num_str in my_string.split_whitespace() {
+    let my_num = my_num_str.parse::<i32>().ok()?;
+    if winning_nums.contains(&my_num) {
+      points += 1;
+    }
+  }
+
+  return Some(points);
 }
